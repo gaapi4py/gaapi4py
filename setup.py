@@ -9,5 +9,11 @@ setup(
     author_email='ptrvtch@gmail.com',
     license='MIT',
     pagkages=['gaapi4py'],
-    zip_safe=False
+    zip_safe=False,
+    install_requires=[
+        'pandas',
+        'pandas-gbq',
+        'oauth2client',
+        'google-api-python-client'
+    ],
 )
