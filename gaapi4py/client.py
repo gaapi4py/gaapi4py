@@ -95,7 +95,7 @@ class GAClient:
 
         return request_body
 
-    def parse_response(self, response_obj):
+    def _parse_response(self, response_obj):
         """
         Parses and prints the Analytics Reporting API V4 response
         """
@@ -149,14 +149,20 @@ class GAClient:
 
         return result
 
-    def request_to_df(self, params):
+    def get_all_data(self, params):
         """ 
         Make a single request to GA API with specified parameters
         """
-        request_body = self._generate_request_body(params)
-        raw_response = self.client.reports().batchGet(body={
-            'reportRequests': request_body
-        }).execute()
-        parsed = self.parse_response(raw_response)
+        all_data = []
+        while True:
+            request_body = self._generate_request_body(params)
+            raw_response = self.client.reports().batchGet(body={
+                'reportRequests': request_body
+            }).execute()
+            parsed = self._parse_response(raw_response)
+            all_data.append(parsed['data'])
+            params['pageToken'] = parsed.get('nextPageToken', None)
+            if not params['pageToken']:
+                break
 
-        return parsed
+        return pd.concat(all_data).reset_index(drop=True)
