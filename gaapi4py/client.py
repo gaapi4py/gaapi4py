@@ -116,12 +116,12 @@ class GAClient:
                 report_data.get('samplesReadCounts', [])[0])
             sampling_space_sizes = int(
                 report_data.get('samplingSpaceSizes', [])[0])
-
-        result['samplesReadCounts'] = samples_read_counts
-        result['samplingSpaceSizes'] = sampling_space_sizes
-        result['nextPageToken'] = report.get('nextPageToken')
-        result['isDataGolden'] = report['data'].get('isDataGolden', False)
-        result['queryCost'] = response_obj.get('queryCost', None)
+        result['info'] = {
+            'isDataGolden': report['data'].get('isDataGolden', False),
+            'nextPageToken': report.get('nextPageToken'),
+            'samplesReadCounts': samples_read_counts,
+            'samplingSpaceSizes': sampling_space_sizes
+        }
         result['data'] = result_df
 
         return result
@@ -131,6 +131,7 @@ class GAClient:
         Make a single request to GA API with specified parameters
         """
         all_data = []
+        response = {}
         while True:
             request_body = self._generate_request_body(params)
             raw_response = self.client.reports().batchGet(body={
@@ -138,11 +139,13 @@ class GAClient:
             }).execute()
             parsed = self._parse_response(raw_response)
             all_data.append(parsed['data'])
-            params['pageToken'] = parsed.get('nextPageToken', None)
+            params['pageToken'] = parsed.get(
+                'info', {}).get('nextPageToken', None)
             if not params['pageToken']:
+                response['info'] = parsed.get('info')
                 break
-
-        return pd.concat(all_data).reset_index(drop=True)
+        response['data'] = pd.concat(all_data).reset_index(drop=True)
+        return response
 
     def set_view_id(self, view_id):
         """
