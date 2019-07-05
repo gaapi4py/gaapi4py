@@ -25,29 +25,6 @@ class GAClient:
             json_keyfile, scopes=SCOPES)
         self.client = build(API_NAME, API_VERSION, credentials=credentials)
 
-    def set_view_id(self, view_id):
-        """
-        Specify View ID and use it in all requests, if not explicitly specified
-        """
-        self.view_id = view_id
-
-    def set_dateranges(self, start_date, end_date):
-        """
-        Sets default dates to generate request bodies
-
-        Args:
-            start_date: string in format 'YYYY-MM-DD'
-            end_date: string in format 'YYYY-MM-DD'
-        """
-        if isinstance(start_date, str):
-            self.start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
-        else:
-            self.start_date = start_date
-        if isinstance(end_date, str):
-            self.end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
-        else:
-            self.end_date = end_date
-
     def _generate_request_body(self, params):
         """
         Read request parameters in simplified form and generate
@@ -166,3 +143,26 @@ class GAClient:
                 break
 
         return pd.concat(all_data).reset_index(drop=True)
+
+    def set_view_id(self, view_id):
+        """
+        Specify View ID and use it in all requests, if not explicitly specified
+        """
+        self.view_id = view_id
+
+    def set_dateranges(self, start_date, end_date):
+        """
+        Sets default dates to generate request bodies
+
+        Args:
+            start_date: string in format 'YYYY-MM-DD'
+            end_date: string in format 'YYYY-MM-DD'
+        """
+        if isinstance(start_date, str):
+            self.start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+        else:
+            self.start_date = start_date
+        if isinstance(end_date, str):
+            self.end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+        else:
+            self.end_date = end_date
