@@ -21,9 +21,9 @@ class GAClient:
         """
         Read service key file and initialize the API client
         """
-        credentials = ServiceAccountCredentials.from_json_keyfile_name(
+        self.credentials = ServiceAccountCredentials.from_json_keyfile_name(
             json_keyfile, scopes=SCOPES)
-        self.client = build(API_NAME, API_VERSION, credentials=credentials)
+        self.client = build(API_NAME, API_VERSION, credentials=self.credentials)
 
     def _generate_request_body(self, params):
         """
@@ -169,3 +169,9 @@ class GAClient:
             self.end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
         else:
             self.end_date = end_date
+
+    def get_credentials(self):
+        """
+        Return OAuth2 credentials which are generated from service account
+        """
+        return self.credentials
