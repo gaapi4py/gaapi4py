@@ -1,4 +1,6 @@
 from datetime import datetime, date
+import logging
+
 import pandas as pd
 from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
@@ -7,6 +9,8 @@ SCOPES = ["https://www.googleapis.com/auth/analytics.readonly"]
 API_NAME = "analyticsreporting"
 API_VERSION = "v4"
 USER_AGENT = "gapy/0.1"
+
+logger = logging.getLogger(__name__)
 
 
 class GAClient:
@@ -24,6 +28,8 @@ class GAClient:
         self.client = build(API_NAME, API_VERSION, credentials=self.credentials)
         self.set_view_id(None)
         self.set_dateranges(None, None)
+
+        logger.debug("gaapi4py client initiated")
 
     def _generate_request_body(self, params):
         """
@@ -138,6 +144,16 @@ class GAClient:
                 response["info"] = parsed.get("info")
                 break
         response["data"] = pd.concat(all_data).reset_index(drop=True)
+        if not response["info"]["isDataGolden"]:
+            logger.warning("Data is not golden")
+        if response["info"]["samplesReadCounts"]:
+            counts = response["info"]["samplesReadCounts"]
+            total = response["info"]["samplingSpaceSizes"]
+            logger.warning(
+                "Data is sampled! Sampling size: {:.2f}%, {} rows were taken out of {}".format(
+                    counts / total, counts, total
+                )
+            )
         return response
 
     def set_view_id(self, view_id):
