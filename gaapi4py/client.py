@@ -24,6 +24,8 @@ class GAClient:
         self.credentials = ServiceAccountCredentials.from_json_keyfile_name(
             json_keyfile, scopes=SCOPES)
         self.client = build(API_NAME, API_VERSION, credentials=self.credentials)
+        self.set_view_id(None)
+        self.set_dateranges(None, None)
 
     def _generate_request_body(self, params):
         """
@@ -31,15 +33,15 @@ class GAClient:
         proper request body for batch request
         """
 
-        sd = params.get('start_date', self.start_date)
-        ed = params.get('end_date', self.end_date)
+        start_date = params.get('start_date', self.start_date)
+        end_date = params.get('end_date', self.end_date)
         include_empty_rows = params.get('include_empty_rows', True)
 
-        if isinstance(sd, date):
-            start_date = datetime.strftime(sd, '%Y-%m-%d')
+        if isinstance(start_date, date):
+            start_date = datetime.strftime(start_date, '%Y-%m-%d')
 
-        if isinstance(ed, date):
-            end_date = datetime.strftime(ed, '%Y-%m-%d')
+        if isinstance(end_date, date):
+            end_date = datetime.strftime(end_date, '%Y-%m-%d')
 
         dimensions = list(map(lambda x: {'name': x}, params.get('dimensions')))
 
