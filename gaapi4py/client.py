@@ -1,8 +1,5 @@
-from datetime import datetime, timedelta, date
-import time
+from datetime import datetime, date
 import pandas as pd
-import httplib2 as lib2
-from oauth2client import client
 from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -122,7 +119,7 @@ class GAClient:
         return result
 
     def get_all_data(self, params):
-        """ 
+        """
         Make a single request to GA API with specified parameters
         """
         all_data = []
