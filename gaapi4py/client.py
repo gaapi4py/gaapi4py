@@ -66,7 +66,7 @@ class GAClient:
             "samplingLevel": "LARGE",
             "includeEmptyRows": include_empty_rows,
             "segments": segments,
-            "pageSize": "10000",
+            "pageSize": "100000",
         }
 
         return request_body
