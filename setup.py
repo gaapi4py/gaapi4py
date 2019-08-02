@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -13,7 +13,7 @@ setup(
     author="Oleh Omelchenko",
     author_email="ptrvtch@gmail.com",
     license="MIT",
-    pagkages=["gaapi4py"],
+    packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
         "Development Status :: 4 - Beta",
