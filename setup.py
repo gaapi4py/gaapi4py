@@ -23,7 +23,6 @@ setup(
     zip_safe=False,
     install_requires=[
         "pandas",
-        "pandas-gbq",
         "oauth2client",
         "google-api-python-client",
     ],
