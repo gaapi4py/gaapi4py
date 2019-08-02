@@ -1,14 +1,24 @@
 from setuptools import setup
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 setup(
     name="gaapi4py",
-    version="0.1",
+    version="1.0.0",
     description="Google Analytics Reporting API v4 for Python 3",
-    url="http://github.com/ptrvtch/gaapi4py",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="http://github.com/gaapi4py/gaapi4py",
     author="Oleh Omelchenko",
     author_email="ptrvtch@gmail.com",
     license="MIT",
     pagkages=["gaapi4py"],
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
     zip_safe=False,
     install_requires=[
         "pandas",
