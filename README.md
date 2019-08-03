@@ -9,9 +9,9 @@ To use this library, you need to have a project in Google Cloud Platform and a s
 ## Quick Start
 
 ```python
-from gaapi4py import client
+from gaapi4py import GAClient
 
-c = client.GAClient('path/to/service_account.json')
+c = GAClient('path/to/service_account.json')
 
 request_body = {
     'view_id': '123456789',
@@ -72,9 +72,9 @@ from datetime import date, timedelta
 from time import sleep
 
 import pandas as pd
-from gaapi4py import client
+from gaapi4py import GAClient
 
-c = client.GAClient('gaapi4py.json')
+c = GAClient('gaapi4py.json')
 c.set_view_id('159274569')
 
 start_date = date(2019,7,1)
