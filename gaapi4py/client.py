@@ -53,7 +53,7 @@ class GAClient:
 
         segments = []
         if params.get("segments"):
-            dimensions.append({"name": "ga:segments"})
+            dimensions.append({"name": "ga:segment"})
             segments.append({"segmentId": params.get("segments")})
 
         request_body = {
@@ -151,7 +151,7 @@ class GAClient:
             total = response["info"]["samplingSpaceSizes"]
             logger.warning(
                 "Data is sampled! Sampling size: {:.2f}%, {} rows were taken out of {}".format(
-                    counts / total, counts, total
+                    counts / total*100, counts, total
                 )
             )
         return response
