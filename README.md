@@ -23,7 +23,8 @@ request_body = {
     },
     'metrics': {
         'ga:sessions'
-    }
+    },
+    'filter': 'ga:sourceMedium==google / organic' # optional filter clause
 }
 
 response = c.get_all_data(request_body)
