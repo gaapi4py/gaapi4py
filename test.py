@@ -1,4 +1,3 @@
-import warnings
 import unittest
 from datetime import date
 
@@ -20,6 +19,13 @@ class TestClient(unittest.TestCase):
         client = GAClient(settings.get("path_to_service_account"))
 
         self.assertIs(type(client), GAClient)
+
+    def test_should_fail_to_init_without_creds(self):
+        with self.assertRaises(TypeError) as context:
+            GAClient()
+        self.assertTrue(
+            "missing 1 required positional argument" in str(context.exception)
+        )
 
     def test_set_view_id(self):
 
@@ -115,8 +121,4 @@ class TestClient(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    with warnings.catch_warnings():
-        warnings.filterwarnings(
-            action="ignore", message="unclosed", category=ResourceWarning, module=".*"
-        )
-        unittest.main()
+    unittest.main()

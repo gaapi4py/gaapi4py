@@ -1,5 +1,7 @@
-VIEW_ID = "<insert your view_id>"
-PATH_TO_SERVICE_ACCOUNT = "/path/to/service_account.json"
+import os
+
+VIEW_ID = os.environ.get("view_id")
+PATH_TO_SERVICE_ACCOUNT = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
 
 settings = {
     "view_id": VIEW_ID,
