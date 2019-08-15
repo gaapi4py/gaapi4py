@@ -8,7 +8,6 @@ from oauth2client.service_account import ServiceAccountCredentials
 SCOPES = ["https://www.googleapis.com/auth/analytics.readonly"]
 API_NAME = "analyticsreporting"
 API_VERSION = "v4"
-USER_AGENT = "gapy/0.1"
 
 logger = logging.getLogger(__name__)
 
@@ -151,7 +150,7 @@ class GAClient:
             total = response["info"]["samplingSpaceSizes"]
             logger.warning(
                 "Data is sampled! Sampling size: {:.2f}%, {} rows were taken out of {}".format(
-                    counts / total*100, counts, total
+                    counts / total * 100, counts, total
                 )
             )
         return response

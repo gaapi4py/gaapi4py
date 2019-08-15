@@ -76,7 +76,7 @@ import pandas as pd
 from gaapi4py import GAClient
 
 c = GAClient('gaapi4py.json')
-c.set_view_id('159274569')
+c.set_view_id('123456789')
 
 start_date = date(2019,7,1)
 end_date = date(2019,7,14)
