@@ -7,7 +7,19 @@ settings = {
     "view_id": VIEW_ID,
     "path_to_service_account": PATH_TO_SERVICE_ACCOUNT,
     "test_dateranges": {"start_date": "2019-01-01", "end_date": "2019-01-07"},
-    "base_request_body_no_dateranges": {
+    "base_request_body_no_dateranges_no_viewid": {
+        "dimensions": ["ga:date"],
+        "metrics": ["ga:sessions"],
+    },
+    "base_request_body_with_dateranges_no_viewid": {
+        "start_date": "2019-01-01",
+        "end_date": "2019-01-07",
+        "dimensions": ["ga:date"],
+        "metrics": ["ga:sessions"],
+    },
+    "base_request_body_no_viewid": {
+        "start_date": "2019-01-01",
+        "end_date": "2019-01-07",
         "dimensions": ["ga:date"],
         "metrics": ["ga:sessions"],
     },

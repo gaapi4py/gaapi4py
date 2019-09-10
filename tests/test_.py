@@ -1,3 +1,4 @@
+import os
 import unittest
 from datetime import date
 
@@ -6,6 +7,8 @@ from googleapiclient.errors import HttpError
 
 from gaapi4py import GAClient
 
+os.environ["view_id"] = "159274569"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/mnt/c/code/gaapi4py.json"
 from test_settings import settings
 
 daterange_settings = settings.get("test_dateranges")
@@ -20,12 +23,10 @@ class TestClient(unittest.TestCase):
 
         self.assertIs(type(client), GAClient)
 
-    def test_should_fail_to_init_without_creds(self):
-        with self.assertRaises(TypeError) as context:
-            GAClient()
-        self.assertTrue(
-            "missing 1 required positional argument" in str(context.exception)
-        )
+    def test_should_fail_to_init_without_creds_and_envvar(self):
+        with self.assertRaises(Exception) as context:
+            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = None
+            client = GAClient()
 
     def test_set_view_id(self):
 
@@ -34,6 +35,16 @@ class TestClient(unittest.TestCase):
         view_id = settings.get("view_id")
         client.set_view_id(view_id)
         self.assertEqual(client.view_id, view_id)
+
+    def test_set_view_id_via_arg(self):
+
+        view_id = settings.get("view_id")
+        client = GAClient(view_id=view_id)
+        self.assertEqual(client.view_id, view_id)
+        res = client.get_all_data(
+            settings.get("base_request_body_with_dateranges_no_viewid")
+        )
+        self.assertEqual(len(res["data"]), 7, "Result dataset should contain 7 rows")
 
     def test_set_dateranges_strings(self):
 
@@ -62,15 +73,32 @@ class TestClient(unittest.TestCase):
         client = GAClient(settings.get("path_to_service_account"))
 
         base_request_body_no_dateranges = settings.get(
-            "base_request_body_no_dateranges"
+            "base_request_body_no_dateranges_no_viewid"
         )
         with self.assertRaises(HttpError) as context:
             client.get_all_data(base_request_body_no_dateranges)
         self.assertTrue("HttpError 400" in str(context.exception))
 
+    def test_should_get_data_on_request_with_dateranges_as_args(self):
+
+        start_date = daterange_settings.get("start_date")
+        end_date = daterange_settings.get("end_date")
+
+        client = GAClient(
+            settings.get("path_to_service_account"),
+            view_id=settings["view_id"],
+            start_date=start_date,
+            end_date=end_date,
+        )
+
+        res = client.get_all_data(
+            settings.get("base_request_body_no_dateranges_no_viewid")
+        )
+        self.assertEqual(len(res["data"]), 7, "Result dataset should contain 7 rows")
+
     def test_should_load_data_on_request_after_dateranges_set(self):
         base_request_body_no_dateranges = settings.get(
-            "base_request_body_no_dateranges"
+            "base_request_body_no_dateranges_no_viewid"
         )
         start_date = daterange_settings.get("start_date")
         end_date = daterange_settings.get("end_date")
