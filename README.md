@@ -10,8 +10,11 @@ To use this library, you need to have a project in Google Cloud Platform and a s
 
 ```python
 from gaapi4py import GAClient
+# if GOOGLE_APPLICATION_CREDENTIALS is set:
+c = GAClient() 
+# or you may specify keyfile path:
+c = GAClient(json_keyfile="path/to/keyfile.json")
 
-c = GAClient('path/to/service_account.json')
 
 request_body = {
     'view_id': '123456789',
@@ -37,6 +40,9 @@ response['data'] # Pandas dataframe that contains data from GA
 If you want to make many requests to a speficic view or with specific dateranges, you can set date ranges for all future requests:
 
 ```python
+# Pass arguments to class init
+c = GAClient(view_id="123456789", start_date="2019-09-01", end_date="2019-09-07") 
+# or use methods to overwrite viewID or dateranges
 c.set_view_id('123456789')
 c.set_dateranges('2019-01-01', '2019-01-31')
 
@@ -64,7 +70,7 @@ response_1 = c.get_all_data(request_body_1)
 response_2 = c.get_all_data(request_body_2)
 ```
 
-## Avoid sampling by taking tada day-by-day
+## Avoid sampling by taking data day-by-day
 
 >Important! Google Analytics reporting API has a limit of maximum 100 requests per 100 seconds. If you want to iterate over large period of days, you might consider adding `time.sleep(1)` at the end of the loop to avoid reaching this limit.
 
@@ -75,8 +81,7 @@ from time import sleep
 import pandas as pd
 from gaapi4py import GAClient
 
-c = GAClient('gaapi4py.json')
-c.set_view_id('123456789')
+c = GAClient(view_id='123456789')
 
 start_date = date(2019,7,1)
 end_date = date(2019,7,14)

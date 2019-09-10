@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, date
 import logging
 
@@ -17,16 +18,17 @@ class GAClient:
     Client Instance.
     """
 
-    def __init__(self, json_keyfile):
+    def __init__(self, json_keyfile=None, view_id=None, start_date=None, end_date=None):
         """
         Read service key file and initialize the API client
         """
+        json_keyfile = json_keyfile or os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
         self.credentials = ServiceAccountCredentials.from_json_keyfile_name(
             json_keyfile, scopes=SCOPES
         )
         self.client = build(API_NAME, API_VERSION, credentials=self.credentials)
-        self.set_view_id(None)
-        self.set_dateranges(None, None)
+        self.set_view_id(view_id)
+        self.set_dateranges(start_date, end_date)
 
         logger.debug("gaapi4py client initiated")
 
