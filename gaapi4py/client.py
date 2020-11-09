@@ -55,7 +55,7 @@ class GAClient:
         segments = []
         if params.get("segments"):
             dimensions.append({"name": "ga:segment"})
-            segments.append({"segmentId": params.get("segments")})
+            segments = list(map(lambda x: {"segmentId": x}, params.get("segments")))
 
         request_body = {
             "viewId": params.get("view_id", self.view_id),
