@@ -120,6 +120,7 @@ class GAClient:
             "nextPageToken": report.get("nextPageToken"),
             "samplesReadCounts": samples_read_counts,
             "samplingSpaceSizes": sampling_space_sizes,
+            "rowCount": report["data"].get("rowCount", 0)
         }
         result["data"] = result_df
 
