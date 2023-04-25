@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
-from gaapi4py import name, version
+# from gaapi4py import name, version
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name=name,
-    version=version,
+    name="gaapi4py",
+    version="1.2.0",
     description="Google Analytics Reporting API v4 for Python 3",
     long_description=long_description,
     long_description_content_type="text/markdown",
